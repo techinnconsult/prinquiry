@@ -163,6 +163,9 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laraveldaily\Quickadmin\QuickadminServiceProvider::class,
+        Sofa\Eloquence\ServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */

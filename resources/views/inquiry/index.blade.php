@@ -13,9 +13,8 @@
                         <th>Supplier List</th>
                         <th>Priority</th>
                         <th>Location</th>
-                        <th>Inquiry For</th>
                         <th>Remarks</th>
-                        <th>Status</th>
+                        <th>Reply Count</th>
                         <th>Actions</th>
                         <!--<th>&nbsp;</th>-->
                     </tr>
@@ -30,14 +29,29 @@
                             </td>
                             <td>{{ $inquiry->priority }}</td>
                             <td>{{ $inquiry->location }}</td>
-                            <td>{{ "Pop Up" }}</td>
                             <td>{{ $inquiry->remarks }}</td>
-                            <td>{{ $inquiry->status }}</td>
-                            <td><ul class="actions">
+                            <td style="text-align:center">{{ $inquiry->count_reply }}</td>
+                            <td>
+                                <ul class="actions">
                                     <li><a href='{{ URL::to('inquiry/details/' . $inquiry->id) }}' class="btn btn-primary">Inquiry Details</a></li>
-                                    <li><a href='#' class="btn btn-primary">Delete</a></li>
-                                    <li><a href='#' class="btn btn-primary">Closed</a></li>
+                                    <li><a onclick="deleted{{ $inquiry->id }}()" href='#' class="btn btn-primary">Delete</a></li>
+                                    <li><a onclick="closed{{ $inquiry->id }}()" href='#' class="btn btn-primary">Close</a></li>
                                 </ul>
+                                <script>
+                                    function closed{{ $inquiry->id }}() {
+                                        var r = confirm("Are you sure you want to close this inquiry?");
+                                        if (r == true) {
+                                             window.location = "{{ URL::to('inquiry/closeInquiry/' . $inquiry->id) }}";
+                                        } 
+                                    }
+
+                                    function deleted{{ $inquiry->id }}() {
+                                        var r = confirm("Are you sure you want to delete this inquiry?");
+                                        if (r == true) {
+                                             window.location = "{{ URL::to('inquiry/deleteInquiry/' . $inquiry->id) }}";
+                                        } 
+                                    }
+                                </script>
                             </td>
                         </tr>
                     @endforeach

@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -21,7 +25,6 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
     /**
      * Where to redirect users after login / registration.
      *
@@ -53,7 +56,40 @@ class RegisterController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
     }
+    /*
+     * register: Override Function to register and add confirmation code and send email.
+     */
+    public function register(Request $request)
+    {
+        $rules = [
+            'username' => 'required|min:6|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6'
+        ];
 
+        $input = $request->all();
+
+        $this->validator($request->all())->validate();
+
+        $confirmation_code = str_random(30);
+        
+        User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'company_name' => $input['company_name'],
+            'mobile_phone' => $input['mobile_phone'],
+            'password' => bcrypt($input['password']),
+            'confirmation_code' => $confirmation_code
+        ]);
+        $code['confirmation_code'] = $confirmation_code;
+        
+        Mail::send('emails.verify', $code, function($message) {
+            $message->to($_REQUEST['email'], $_REQUEST['name'])
+                ->subject('Verify your email address');
+        });
+        
+        return redirect($this->redirectPath())->withMessage('Thanks for signing up! Please check your email.');
+    }
     /**
      * Create a new user instance after a valid registration.
      *
@@ -67,8 +103,11 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'company_name' => $data['company_name'],
             'mobile_phone' => $data['mobile_phone'],
-            'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+    
+    public function verify($confirmation_code){
+        
     }
 }

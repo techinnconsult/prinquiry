@@ -41,7 +41,6 @@
                 <thead>
                     <tr>
                         <th>Item Number</th>
-                        <th>Qty</th>
                         <th>Unit</th>
                         <th>Type</th>
                         <th>Category</th>
@@ -54,7 +53,7 @@
                                 <?php $seller_inquiry_details = json_decode($details->inquiry_details,true); ?>
                                 
                                 @if($i == 0)
-                                    <th>{{ $details->name }}</th>
+                                    <th style="text-align:center;">{{ $details->name }}</th>
                                 @endif
                                 <?php $prices[$i][$j] =  $seller_inquiry_details[$i]['price']; ?>
                                 <?php $j++; ?>
@@ -70,9 +69,10 @@
                                 @if (isset($value['partnum']))
                                     <td> {{ $value['partnum'] }} </td>
                                 @elseif(isset($value['qty']))
-                                    <td> {{ $value['qty'] }} </td>
+                                    <td> {{ $value['qty'] }}
                                 @elseif(isset($value['unit']))   
-                                    <td> {{ $value['unit'] }} </td>
+                                    {{ $value['unit'] }} 
+                                    </td>
                                 @elseif(isset($value['type']))   
                                     <td> {{ $value['type'] }} </td>
                                 @elseif(isset($value['category']))   
@@ -96,12 +96,13 @@
                                     $price = '';
                                     $style = '';
                                 }
-                                setlocale(LC_MONETARY, 'en_US');
-                                if($price > 0){
-                                    $price =  money_format('%(#10n', $price) . "\n";
-                                }
                                 ?>
-                                <td style="{{ $style }}">{{ $price }}</td>
+                            <td style="{{ $style }}">
+                                <ul style="list-style:none;margin:0px;text-align:center;">
+                                    <li>{{ $seller_inquiry_details[$i]['stock']."/".$price."(AED)" }}</li>
+                                    <li>{{ $seller_inquiry_details[$i]['brand'] }}</li>
+                                </ul>
+                            </td>
                             @endforeach
                         </tr>
                         <?php $i = $i+1; ?>

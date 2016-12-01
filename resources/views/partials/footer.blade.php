@@ -53,45 +53,17 @@
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
                     // Used to skip the "Warning" step if the user is old enough.
-                    var fields = $( "#frmInquiry :input" ).serializeArray();
-                    var required = true;
-                    var maxIndex = 1;
-                    $.each( fields, function( i, field ) {
-                        if( field.name == 'inqpost[][partnum]' || field.name == 'inqpost[][qty]'){
-                            if(field.value == ''){
-                                required = false;
-                                maxIndex = i;
-                                return false;
-                            }
-                        }
-                    });
-//                    console.log($('#inqpost['+counter+'][partnum]'))
-//                    $("#rows"+counter).append('Test');
-//                    $('inqpost['+counter+'][partnum]').rules("add", {
-//                        required: true
-//                    });
-
-//                    counter += 1;
-//                    return false;
-                    // Allways allow previous action even if the current form is not valid!
-                    if (currentIndex > newIndex)
+                    var fields = $( "#rows1  :input" ).serializeArray();
+                    if (fields[0].value != '')
                     {
                         return true;
                     }
                     // Forbid next action on "Warning" step if the user is to young
-                    if (required === false)
+                    if (fields[0].value === '')
                     {
+                        alert('Please enter atleast one inquiry');
                         return false;
                     }
-                    // Needed in some cases if the user went back (clean up)
-                    if (currentIndex < newIndex)
-                    {
-                        // To remove error styles
-                        form.find(".body:eq(" + newIndex + ") label.error").remove();
-                        form.find(".body:eq(" + newIndex + ") .error").removeClass("error");
-                    }
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                    return form.valid();
                 },
                 onStepChanged: function (event, currentIndex, priorIndex)
                 {

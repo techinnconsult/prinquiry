@@ -22,8 +22,18 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/inquiry/received', 'InquiryController@received');
 Route::get('/inquiry/reply/{inquiry_id}', 'InquiryController@reply');
+Route::get('/inquiry/closeSellerInquiry/{inquiry_id}', 'InquiryController@closeSellerInquiry');
+Route::get('/inquiry/deleteSellerInquiry/{inquiry_id}', 'InquiryController@deleteSellerInquiry');
+Route::get('/inquiry/closeInquiry/{inquiry_id}', 'InquiryController@closeInquiry');
+Route::get('/inquiry/deleteInquiry/{inquiry_id}', 'InquiryController@deleteInquiry');
 Route::get('/inquiry/details/{inquiry_id}', 'InquiryController@details');
 Route::post('/inquiry/update', 'InquiryController@update');
+Route::post('/auth/register', 'RegisterController@register');
+
+Route::get('register/verify/{confirmationCode}', [
+    'as' => 'confirmation_path',
+    'uses' => 'RegistrationController@confirm'
+]);
 
 Route::resource('profile', 'ProfileController');
 

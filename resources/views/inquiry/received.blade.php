@@ -36,12 +36,34 @@
                             <td>{{ $inquiry->location }}</td>
                             <td>{{ "Pop Up" }}</td>
                             <td>{{ $inquiry->remarks }}</td>
-                            <td>{{ $inquiry->status }}</td>
-                            <td><ul class="actions">
+                            <td>
+                                @if($inquiry->status == 'Reply')
+                                    {{ 'Replied' }}
+                                @else
+                                    {{ $inquiry->status }}
+                                @endif
+                            </td>
+                            <td>
+                                <ul class="actions">
                                     <li><a href='{{ URL::to('inquiry/reply/' . $inquiry->id) }}' class="btn btn-primary">Reply</a></li>
-                                    <li><a href='#' class="btn btn-primary">Delete</a></li>
-                                    <li><a href='#' class="btn btn-primary">Closed</a></li>
+                                    <li><a onclick="deleted()" href='#' class="btn btn-primary">Delete</a></li>
+                                    <li><a onclick="closed()" href='#' class="btn btn-primary">Close</a></li>
                                 </ul>
+                                <script>
+                                function closed() {
+                                    var r = confirm("Are you sure you want to close this inquiry?");
+                                    if (r == true) {
+                                         window.location = "{{ URL::to('inquiry/closeSellerInquiry/' . $inquiry->id) }}";
+                                    } 
+                                }
+                                
+                                function deleted() {
+                                    var r = confirm("Are you sure you want to delete this inquiry?");
+                                    if (r == true) {
+                                         window.location = "{{ URL::to('inquiry/deleteSellerInquiry/' . $inquiry->id) }}";
+                                    } 
+                                }
+                                </script>
                             </td>
                         </tr>
                     @endforeach

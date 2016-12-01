@@ -10,6 +10,9 @@
                         <p>{{ Session::get('message') }}</p>
                     </div>
                 @endif
+                
+                @include('flash::message')
+                
                 @yield('content')
             </div>
         </section>

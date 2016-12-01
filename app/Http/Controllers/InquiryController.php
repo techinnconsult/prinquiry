@@ -28,9 +28,9 @@ class InquiryController extends Controller
     {
         $user = auth()->user();
         $inq = new Inquiry();
-        $customer = User::with('inquiry')->get();
-        return view('inquiry.index',['inquiries' => $inq->getInquiriesSentByCustomerId($user->id)]);
+        return view('inquiry.index',['inquiries' => $inq->getInquiriesSentByCustomerId($user->id)]);  
     }
+    
     public function received()
     {
         $user = auth()->user();
@@ -86,28 +86,32 @@ class InquiryController extends Controller
         $inquiry_details_post = $request->inqpost;
         $index = 0;
         for($i = 0;$i < count($inquiry_details_post)-2;){
-            for($j = 0; $j < 6; $j++){
-                if(isset($inquiry_details_post[$i])){
-                    $value = $inquiry_details_post[$i];
-                    if (isset($value['partnum'])){
-                        $inquiry_details[$index][$j]['partnum'] = $value['partnum'];
-                    }elseif(isset($value['qty'])){
-                        $inquiry_details[$index][$j]['qty'] = $value['qty'];
-                    }elseif(isset($value['unit'])){   
-                        $inquiry_details[$index][$j]['unit'] = $value['unit'];
-                    }elseif(isset($value['type'])){   
-                        $inquiry_details[$index][$j]['type'] = $value['type'];
-                    }elseif(isset($value['category'])){
-                        $inquiry_details[$index][$j]['category'] = $value['category'];
-                    }elseif(isset($value['detail'])){
-                        $inquiry_details[$index][$j]['detail'] = $value['detail'];
-                    } 
-                }else{
-                    break;
+            if($inquiry_details_post[$i]['partnum'] != ''){           
+                for($j = 0; $j < 6; $j++){
+                    if(isset($inquiry_details_post[$i])){
+                        $value = $inquiry_details_post[$i];
+                        if (isset($value['partnum'])){
+                            $inquiry_details[$index][$j]['partnum'] = $value['partnum'];
+                        }elseif(isset($value['qty'])){
+                            $inquiry_details[$index][$j]['qty'] = $value['qty'];
+                        }elseif(isset($value['unit'])){   
+                            $inquiry_details[$index][$j]['unit'] = $value['unit'];
+                        }elseif(isset($value['type'])){   
+                            $inquiry_details[$index][$j]['type'] = $value['type'];
+                        }elseif(isset($value['category'])){
+                            $inquiry_details[$index][$j]['category'] = $value['category'];
+                        }elseif(isset($value['detail'])){
+                            $inquiry_details[$index][$j]['detail'] = $value['detail'];
+                        }
+                    }else{
+                        break;
+                    }
+                    $i = $i+1;
                 }
-                $i = $i+1;
+                $index = $index+1;
+            }else{
+                $i = $i+6;
             }
-            $index = $index+1;
         }
         $balance = $user->balance;
         DB::table('users')
@@ -149,6 +153,14 @@ class InquiryController extends Controller
     {
         $user = auth()->user();
         $inq = new Inquiry();
+        
+        DB::table('seller_inquiry')
+            ->where('seller_id', $user->id)
+            ->where('inquiry_id', $inquiry_id)
+            ->where('status', 'New')
+            ->update([ 'status' => 'Pending', 
+                'updated_at' => date('Y-m-d H:i:s')]);
+        
         $customer = User::with('inquiry')->get();
         return view('inquiry.reply',['inquiries' => $inq->getInquiryBySupplierId($user->id,$inquiry_id),'customers' => $customer]);
     }
@@ -163,16 +175,6 @@ class InquiryController extends Controller
         $inq = new Inquiry();
         $customer = User::with('inquiry')->get();
         return view('inquiry.details',['inquiries' => $inq->getInquirySentByCustomerId($user->id,$inquiry_id),'seller_inquiry' => $inq->getSellerInquiryByInquiryId($inquiry_id,'Reply'),'customers' => $customer]);
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -198,15 +200,51 @@ class InquiryController extends Controller
         $customer = User::with('inquiry')->get();
         return view('inquiry.received',['inquiries' => $inq->getInquiriesBySupplierId($input['seller_id']),'customers' => $customer]);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    
+    public function closeSellerInquiry($id)
     {
-        //
+        $user = auth()->user();
+        
+        DB::table('seller_inquiry')
+            ->where('seller_id', $user->id)
+            ->where('inquiry_id', $id)
+            ->where('closed', '0')
+            ->update([ 'closed' => '1', 
+                'updated_at' => date('Y-m-d H:i:s')]);
+        
+        $inq = new Inquiry();
+        $customer = User::with('inquiry')->get();
+        return view('inquiry.received',['inquiries' => $inq->getInquiriesBySupplierId($user->id),'customers' => $customer]);
+    }
+    
+    public function deleteSellerInquiry($id)
+    {
+        $user = auth()->user();
+        
+        DB::table('seller_inquiry')
+            ->where('seller_id', $user->id)
+            ->where('inquiry_id', $id)
+            ->delete();
+        
+        $inq = new Inquiry();
+        $customer = User::with('inquiry')->get();
+        return view('inquiry.received',['inquiries' => $inq->getInquiriesBySupplierId($user->id),'customers' => $customer]);
+    } 
+    
+    public function closeInquiry($id)
+    {
+        $user = auth()->user();
+        $inq = new Inquiry();
+        return view('inquiry.index',['inquiries' => $inq->getInquiriesSentByCustomerId($user->id)]);  
+    }
+    
+    public function deleteInquiry($id)
+    {
+        $user = auth()->user();
+        $inq = new Inquiry();
+        
+        $inq->deleteInquiry($id,$user->id);
+        
+        return view('inquiry.index',['inquiries' => $inq->getInquiriesSentByCustomerId($user->id)]);  
     }
 }

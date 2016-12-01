@@ -22,8 +22,8 @@
                                     <th>Date</th>
                                     <th>Supplier</th>
                                     <th>Priority</th>
+                                    <th>Replies Count</th>
                                     <th>Location</th>
-                                    <th>Status</th>
                                     <th>Actions</th>
                                     <!--<th>&nbsp;</th>-->
                                 </tr>
@@ -41,8 +41,8 @@
                                             @endforeach
                                         </td>
                                         <td>{{ $inquiry->priority }}</td>
+                                        <td>{{ $inquiry->count_reply }}</td>
                                         <td>{{ $inquiry->location }}</td>
-                                        <td>{{ $inquiry->status }}</td>
                                         <td><ul class="actions">
                                                 <li><a href='{{ URL::to('inquiry/details/' . $inquiry->id) }}' class="btn btn-primary">Inquiry Details</a></li>
                                             </ul>
@@ -64,7 +64,6 @@
                                     <th>Priority</th>
                                     <th>Location</th>
                                     <th>Inquiry For</th>
-                                    <th>Remarks</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                     <!--<th>&nbsp;</th>-->
@@ -85,8 +84,13 @@
                                         <td>{{ $inquiry->priority }}</td>
                                         <td>{{ $inquiry->location }}</td>
                                         <td>{{ "Pop Up" }}</td>
-                                        <td>{{ $inquiry->remarks }}</td>
-                                        <td>{{ $inquiry->status }}</td>
+                                        <td>
+                                            @if($inquiry->status == 'Reply')
+                                                {{ 'Replied' }}
+                                            @else
+                                                {{ $inquiry->status }}
+                                            @endif
+                                        </td>
                                         <td><ul class="actions">
                                                 <li><a href='{{ URL::to('inquiry/reply/' . $inquiry->id) }}' class="btn btn-primary">Reply</a></li>
                                             </ul>
