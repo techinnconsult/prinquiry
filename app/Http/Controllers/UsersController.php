@@ -94,4 +94,24 @@ class UsersController extends Controller
 
         return redirect()->route('users.index')->withMessage(trans('quickadmin::admin.users-controller-successfully_deleted'));
     }
+    
+    public function confirm($confirmation_code){
+        if( ! $confirmation_code)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user = User::whereConfirmationCode($confirmation_code)->first();
+
+        if ( ! $user)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user->confirmed = 1;
+        $user->confirmation_code = null;
+        $user->save();
+
+        return redirect()->route('login')->withMessage('You have successfully verified your account.');
+    }
 }

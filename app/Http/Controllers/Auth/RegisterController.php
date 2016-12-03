@@ -88,7 +88,7 @@ class RegisterController extends Controller
                 ->subject('Verify your email address');
         });
         
-        return redirect($this->redirectPath())->withMessage('Thanks for signing up! Please check your email.');
+        return redirect('register')->withMessage('Thanks for signing up! Please check your email.');
     }
     /**
      * Create a new user instance after a valid registration.
@@ -105,9 +105,5 @@ class RegisterController extends Controller
             'mobile_phone' => $data['mobile_phone'],
             'password' => bcrypt($data['password']),
         ]);
-    }
-    
-    public function verify($confirmation_code){
-        
     }
 }

@@ -201,6 +201,9 @@ class InquiryController extends Controller
         return view('inquiry.received',['inquiries' => $inq->getInquiriesBySupplierId($input['seller_id']),'customers' => $customer]);
     }
     
+    public function supplier($inquiry_id){
+        return $inquiry_id;
+    }
     public function closeSellerInquiry($id)
     {
         $user = auth()->user();
