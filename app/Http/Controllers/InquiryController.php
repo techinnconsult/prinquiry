@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 use App\Role;
 use App\User;
@@ -52,6 +54,7 @@ class InquiryController extends Controller
             ->leftJoin('customer_seller', 'customer_seller.seller_id', '=', 'users.id')
             ->select('users.*','customer_seller.seller_id')
             ->whereRaw('customer_seller.customer_id = '.$user->id)
+            ->orderBy('users.name', 'asc')
             ->get();
         $not_in_array = array();
         foreach($selected_customers as $selected_customer){
@@ -65,11 +68,13 @@ class InquiryController extends Controller
         $users = DB::table('users')
                 ->whereNotIn('id', $not_in_array)
                  ->limit(10)
+                ->orderBy('users.name', 'asc')
                 ->get();
         $remaining_users = DB::table('users')
                 ->whereNotIn('id', $not_in_array)
                  ->offset(10)
                  ->limit($users_count)
+                ->orderBy('users.name', 'asc')
                 ->get();
         return view('inquiry.create', ['remaining_users' => $remaining_users,'categories' => $categories,'users' => $users,'selected_customers' => $selected_customers]);
     }
@@ -124,8 +129,22 @@ class InquiryController extends Controller
         
         $seller_ids = $_POST['inquiry-supplier'];
         foreach($seller_ids as $seller_id){
+            $seller = User::where('id',$seller_id) -> first();
             $seller_inquiry = array();
             DB::table('seller_inquiry')->insert(['seller_id' => $seller_id,'inquiry_id' => $inquiry_id,'status' => 'New','created_at' => date('Y-m-d H:i:s')]);
+            $code['seller_name'] = $seller->name;
+            $code['user_name'] = $user->name;
+            $code['location'] = $request->location;
+            $code['priority'] = $request->priority;
+            $code['inquiry_id'] = $inquiry_id;
+            $code['inquiry_details'] = json_encode($inquiry_details);
+            $data['to'] = $seller->email;
+            $data['seller_name'] = $seller->name;
+            $data['user_name'] = $user->name;
+            Mail::send('emails.supplier', $code, function($message) use ($data) {
+                $message->to($data['to'] , $data['seller_name'])
+                    ->subject('New Inquiry Created by '.$data['user_name']);
+            });
         }
         return redirect()->route('inquiry.index')->withMessage(trans('Inquiry Created Successfully'));
     }
@@ -197,13 +216,50 @@ class InquiryController extends Controller
                 ->where('id',$user->id)
                 ->update(['balance' => $balance-1]);
         $inq = new Inquiry();
+        
         $customer = User::with('inquiry')->get();
+        
+        $user_to = User::where('id',$input['customer_id']) -> first();
+        $data['to'] = $user_to->email;
+        $data['user_name'] = $user_to->name;
+        $data['user_name'] = $user_to->name;
+        $data['seller_name'] = $user->name;
+        $code['user_name'] =  $user_to->name;
+        $code['seller_name'] = $user->name;
+        $code['inquiry_id'] =$input['id'];
+        Mail::send('emails.reply', $code, function($message) use ($data) {
+                $message->to($data['to'] , $data['user_name'])
+                    ->subject('Inquiry Replied by '.$data['seller_name']);
+            });
         return view('inquiry.received',['inquiries' => $inq->getInquiriesBySupplierId($input['seller_id']),'customers' => $customer]);
     }
     
     public function supplier($inquiry_id){
-        return $inquiry_id;
+        $inq = new Inquiry();
+        return json_encode($inq->getSellersDetailsByInquiryId($inquiry_id));
     }
+    
+    public function shortView($inquiry_id){
+        $inq = new Inquiry();
+        $inquiry = $inq->getInquiryById($inquiry_id);
+        $inquiry_details = json_decode($inquiry->inquir_details,true);
+        $details = array();
+        $count = 5;
+        if(count($inquiry_details) < 5){
+            $count = count($inquiry_details);
+        }
+        for($i = 0;$i<$count;$i++){
+            $inquiry_detail = $inquiry_details[$i];
+            $details[$i]['partnum'] = $inquiry_detail[0]['partnum'];
+            $details[$i]['qty'] = $inquiry_detail[1]['qty'];
+            $details[$i]['unit'] = $inquiry_detail[2]['unit'];
+            $details[$i]['type'] = $inquiry_detail[3]['type'];
+            $details[$i]['category'] = $inquiry_detail[4]['category'];
+            $details[$i]['detail'] = $inquiry_detail[5]['detail'];
+        }
+        return json_encode($details);
+    }
+    
     public function closeSellerInquiry($id)
     {
         $user = auth()->user();

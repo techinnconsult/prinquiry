@@ -37,7 +37,7 @@
                 @endif
             </div>
             <div class="6u 6u$(xsmall) form-group{{ $errors->has('mobile_phone') ? ' has-error' : '' }}">
-                <input placeholder="Mobile Phone" id="mobile_phone" type="text" class="form-control" name="mobile_phone" value="{{ old('mobile_phone',$user->mobile_phone) }}" autofocus>
+                <input placeholder="Deals In" id="mobile_phone" type="text" class="form-control" name="mobile_phone" value="{{ old('mobile_phone',$user->mobile_phone) }}" autofocus>
                 @if ($errors->has('mobile_phone'))
                     <span class="help-block">
                         <strong>{{ $errors->first('mobile_phone') }}</strong>

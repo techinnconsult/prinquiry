@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/inquiry/received', 'InquiryController@received');
 Route::get('/inquiry/supplier/{inquiry_id}', 'InquiryController@supplier');
+Route::get('/inquiry/shortView/{inquiry_id}', 'InquiryController@shortView');
 Route::get('/inquiry/reply/{inquiry_id}', 'InquiryController@reply');
 Route::get('/inquiry/closeSellerInquiry/{inquiry_id}', 'InquiryController@closeSellerInquiry');
 Route::get('/inquiry/deleteSellerInquiry/{inquiry_id}', 'InquiryController@deleteSellerInquiry');

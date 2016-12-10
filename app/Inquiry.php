@@ -26,7 +26,17 @@ class Inquiry extends Model {
                 ->get();
         return $Inquiries;
     }
-    
+    /*
+     * $id: Inquiry Id
+     * getInquiryBySupplierId: Return All Inquiries Which Received
+    */
+    public function getInquiryById($id) {
+        $Inquiries = DB::table('inquiry')
+                ->where('inquiry.id', $id)
+                ->where('inquiry.closed', '0')
+                ->first();
+        return $Inquiries;
+    }
     public function sellerInquiries()
     {
         return $this->hasMany('App\SellerInquiry');
@@ -155,6 +165,18 @@ class Inquiry extends Model {
                 ->orderBy('seller_inquiry.created_at', 'desc')
                 ->get();
         return $Inquiries;
+    }
+    
+    public function getSellersDetailsByInquiryId($inquiry_id) {
+        
+        $Sellers = DB::table('seller_inquiry')
+                ->leftJoin('users', 'seller_inquiry.seller_id', '=', 'users.id')
+                ->select('seller_inquiry.*','users.name')
+                ->where('seller_inquiry.inquiry_id', $inquiry_id)
+                ->where('seller_inquiry.closed', '0')
+                ->orderBy('seller_inquiry.created_at', 'desc')
+                ->get();
+        return $Sellers;
     }
     
     /*

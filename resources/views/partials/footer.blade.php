@@ -4,7 +4,7 @@
             <div class="inner">
                 <ul class="menu">
                     <li>&copy; Evolink Technologies. All rights reserved.</li>
-                    <li>Design: <a href="http://evolinksys.com">Rez</a></li>
+                    <li>Design & Developed: <a href="http://techinn.biz">TechInn Consultants</a></li>
                 </ul>
             </div>
         </footer>

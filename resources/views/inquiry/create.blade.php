@@ -24,7 +24,8 @@
             <h3>Step 1 - Inquiry</h3>
             <section>
                 <div id="inquiry_details">
-                    <div class="row uniform inquiry-fields" id="rows1">
+                    <?php for($i=1; $i<6;$i++){ ?>
+                    <div class="row uniform inquiry-fields" id="rows{{ $i }}">
                         <div class="2u 12u$(xsmall)">
                             <input type="text" name="inqpost[][partnum]" id="inqpost[][partnum]" value="" placeholder="Part Number" />
                         </div>
@@ -66,6 +67,7 @@
                             <input type="text" name="inqpost[][detail]" id="inqpost[][detail]" value="" placeholder="More Details..." />
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
                 <div class="row uniform">
                     <div class="12u$">
@@ -82,45 +84,98 @@
                 @if($selected_customers->count() > 0)
                     <div class="6u 12u$(xsmall)">
                         <h4>Frequent Supplier</h4>
-                        <label><input type="checkbox" id="checkbox_preffered_supplier"/> <b>Check all</b> </label>
-                        @foreach($selected_customers as $selected_customer)
-                            <label>
-                                <input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">
-                                {{ $selected_customer->name }}
-                            </label>
-                        @endforeach
+                                <table class="table table-striped table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <label><input type="checkbox" id="checkbox_preffered_supplier"/> <b>Check all</b> </label>
+                                            </th>
+                                            <th>Company Name</th>
+                                            <th>Deals In</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($selected_customers as $selected_customer)
+                                            <tr>
+                                                <td>
+                                                    <label>
+                                                        <input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">
+                                                        {{ $selected_customer->name }}
+                                                    </label>
+                                                </td>
+                                                <td>{{ $selected_customer->company_name }}</td>
+                                                <td>{{ $selected_customer->mobile_phone }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                     </div>
                     <div class="6u 12u$(xsmall)">
                         <h4>Other/ ALL  Supplier</h4>
-                        <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                        
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                                </th>
+                                <th>Company Name</th>
+                                <th>Deals In</th>
+                            </tr>
+                        </thead>
                 @else 
                    <div class="12u$ 12u$(xsmall)"> 
                         <h4>Other/ ALL  Supplier</h4>
-                        <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                        
+                    <table class="table table-striped table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                                </th>
+                                <th>Company Name</th>
+                            </tr>
+                        </thead>
                 @endif
-                    @foreach($users as $user)
-                        <div>
-                            <label>
-                                <input value="{{ $user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
-                                {{ $user->name }}
-                            </label>
-                        </div>
-                    @endforeach
-                    @if($remaining_users->count() > 0)
-                        <div id="remaining_users" style="display:none;">
-                            @foreach($remaining_users as $remaining_user)
-                                <div>
-                                    <label>
-                                        <input value="{{ $remaining_user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
-                                        {{ $remaining_user->name }}
-                                    </label>
-                                </div>
+                        <tbody>
+                            @foreach($users as $user)
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input value="{{ $user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">{{ $user->name }}
+                                        </label>
+                                        <!--<input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">-->
+                                    </td>
+                                    <td>{{ $user->company_name }}</td>
+                                    <td>{{ $user->mobile_phone }}</td>
+                                </tr>
                             @endforeach
-                        </div>
-                        <a class="button scrolly" id="moreSupplier">More Supplier..</a>
-                    @endif
+                            </tbody>
+                        </table>
+                        @if($remaining_users->count() > 0)
+                            <div id="remaining_users" style="display:none;">
+                                <table class="table table-striped table-hover table-responsive">
+                                    @foreach($remaining_users as $remaining_user)
+                                        <tr>
+                                            <td>
+                                                <label>
+                                                    <input value="{{ $remaining_user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">{{ $remaining_user->name }}
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    {{ $remaining_user->company_name }}
+                                                </label>
+                                            </td>
+                                            <td>{{ $remaining_user->mobile_phone }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <a class="button scrolly" id="moreSupplier">More Supplier..</a>
+                        @endif
                     </div>
-                    </div>
+                </div>
             </section>
             <h3>Step 3 - Send Inquiry</h3>
             <section>

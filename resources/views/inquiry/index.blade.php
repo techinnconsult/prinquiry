@@ -5,7 +5,7 @@
     <h2>Inquiry List</h2>
     <div class="row uniform">
         <div class="12u$">
-            <table class="table table-striped table-hover table-responsive datatable">
+            <table id="supplier-list" class="table table-striped table-hover table-responsive">
                 <thead>
                     <tr>
                         <th>Inquiry #</th>
@@ -19,13 +19,13 @@
                         <!--<th>&nbsp;</th>-->
                     </tr>
                 </thead>
-                <tbody>
+                <tbody
                     @foreach ($inquiries as $inquiry)
                     <tr style="@if($inquiry->priority == 'Urgent') {{ "background:#953d75;" }} @endif">
                             <td>{{ $inquiry->id }}</td>
                             <td>{{ Carbon\Carbon::parse($inquiry->created_at)->format('Y-m-d') }}</td>
                             <td> 
-                                <button id="myBtn<?php echo $inquiry->id; ?>">Open Modal</button>
+                                <a id="myBtn<?php echo $inquiry->id; ?>" href="#supplier-list">Supplier List</a>
                             </td>
                             <td>{{ $inquiry->priority }}</td>
                             <td>{{ $inquiry->location }}</td>
@@ -66,12 +66,27 @@
 
                             // When the user clicks the button, open the modal 
                             btn.onclick = function() {
+                                $('#modal-title').html('Supplier list for inquiry# <?php echo $inquiry->id; ?>')
                                 $.ajax({
                                     type: "GET",
+                                    dataType: 'json',
                                     url: '<?php echo URL::to('/inquiry/supplier/'.$inquiry->id); ?>',
                                     success: function( msg ) {
-                                        $('#myModal .modal-body').html("");
-                                        $('#myModal .modal-body').html(msg);
+                                        $('#myModal tbody').html("");
+                                        var	rows = '';
+                                        $.each( msg, function( key, value ) {
+                                                rows = rows + '<tr>';
+                                                rows = rows + '<td>'+value.name+'</td>';
+                                                rows = rows + '<td>'+value.status+'</td>';
+                                                if(value.delievery_date){
+                                                    rows = rows + '<td>'+value.delievery_date+'</td>';
+                                                }else{
+                                                    rows = rows + '<td>N/A</td>';
+                                                }
+                                                rows = rows + '</tr>';
+                                        });
+                                        console.log(rows);
+                                        $('#myModal tbody').html(rows);
                                     }
                                 });
                                 modal.style.display = "block";
@@ -113,11 +128,11 @@
         /* Modal Content */
         .modal-content {
             position: relative;
-            background-color: #fefefe;
+            background-color: #493382;
             margin: auto;
             padding: 0;
-            border: 1px solid #888;
-            width: 80%;
+            /*border: 1px solid #888;*/
+            width: 55%;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
             -webkit-animation-name: animatetop;
             -webkit-animation-duration: 0.4s;
@@ -153,15 +168,15 @@
 
         .modal-header {
             padding: 2px 16px;
-            background-color: #5cb85c;
+            background-color: #312450;
             color: white;
         }
 
-        .modal-body {padding: 2px 16px;}
+        /*.modal-body {padding: 2px 16px;}*/
 
         .modal-footer {
             padding: 2px 16px;
-            background-color: #5cb85c;
+            background-color: #312450;
             color: white;
         }
     </style>
@@ -174,14 +189,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="close">×</span>
-        <h2>Modal Header</h2>
+        <h2 id="modal-title">Modal Header</h2>
       </div>
       <div class="modal-body">
-        <p>Some text in the Modal Body</p>
-        <p>Some other text...</p>
-      </div>
-      <div class="modal-footer">
-        <h3>Modal Footer</h3>
+        <table class="table table-striped table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>Supplier Name</th>
+                        <th>Status</th>
+                        <th>Delivery Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+        </table>
       </div>
     </div>
 

@@ -43,7 +43,7 @@ class LoginController extends Controller
         ];
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect($this->redirectPath())->withMessage('Thanks for signing up! Please check your email.');
+            return redirect($this->redirectPath());
         }else{
             flash('Please confirm your email before login.','danger');
             return redirect($this->redirectPath())->withMessage('Thanks for signing up! Please check your email.');

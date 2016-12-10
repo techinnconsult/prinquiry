@@ -63,7 +63,6 @@
                                     <th>Customer Name</th>
                                     <th>Priority</th>
                                     <th>Location</th>
-                                    <th>Inquiry For</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                     <!--<th>&nbsp;</th>-->
@@ -83,7 +82,6 @@
                                         </td>
                                         <td>{{ $inquiry->priority }}</td>
                                         <td>{{ $inquiry->location }}</td>
-                                        <td>{{ "Pop Up" }}</td>
                                         <td>
                                             @if($inquiry->status == 'Reply')
                                                 {{ 'Replied' }}

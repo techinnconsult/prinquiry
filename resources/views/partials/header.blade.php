@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>
-        Prinquiry Your Online Assistant
+        Autoparts Inquiry
     </title>
 
     <meta http-equiv="X-UA-Compatible"
@@ -24,6 +24,14 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.4.5/jquery-ui-timepicker-addon.min.css"/>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.standalone.min.css"/>
+    
+    <!-- ************************************************************************ !-->
+    <!-- *****                                                              ***** !-->
+    <!-- *****       ¤ Designed and Developed by  Techinn Consultants       ***** !-->
+    <!-- *****               http://www.techinn.biz                         ***** !-->
+    <!-- *****                                                              ***** !-->
+    <!-- ************************************************************************ !-->
+    
 </head>
 
 <body>

@@ -62,10 +62,12 @@
 <!-- Sidebar -->
 <section id="sidebar">
        <div class="row uniform">
-            <div class="3u 12u$(xlarge) 12u$(xsmall)">
-                <h2 style="margin-top: 6px;"><a href="{{ url('/home') }}" class="title">PRinquiry</a></h2>
+           <div class="3u 12u$(xlarge) 12u$(xsmall)" style="margin-top: 15px;">
+                <a href="{{ url('/home') }}" class="title">
+                    <img src="{{ url('prinquiry/images/') }}/logo.jpg" style="height: 60px;" />
+                </a>
             </div>
-            <div class="6u 12u$(xlarge) 12u$(xsmall)">
+            <div class="6u 12u$(xlarge) 12u$(xsmall)" style="margin-top: 15px;">
                 <nav id="primary_nav_wrap">
                     <ul>
                             <li>
@@ -82,7 +84,7 @@
                     <div style="clear:both"></div>
                 </nav>
             </div>
-           <div class="3u 12u$(xlarge) 12u$(xsmall)">
+           <div class="3u 12u$(xlarge) 12u$(xsmall)" style="margin-top: 15px;">
                <nav>
                     <ul>
                          @if(Auth::guest())
