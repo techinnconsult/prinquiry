@@ -6,6 +6,8 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+
 
 class UsersController extends Controller
 {
@@ -89,9 +91,26 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $inquiries = DB::table('inquiry')
+                ->select('inquiry.*')
+                ->where('inquiry.customer_id', $id)
+                ->get();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        
+        DB::table('inquiry')->where('inquiry.customer_id', $id)->delete();
+        DB::table('seller_inquiry')->where('seller_id', $id)->delete();
+        if(count($inquiries) > 0){
+            foreach ($inquiries as $inquiry){
+                DB::table('seller_inquiry')->where('inquiry_id', $inquiry->id)->delete();
+            }
+        }
+        DB::table('customer_seller')->where('customer_id', $id)->delete();
+        DB::table('customer_seller')->where('seller_id', $id)->delete();
+        
         User::destroy($id);
-
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        
         return redirect()->route('users.index')->withMessage(trans('quickadmin::admin.users-controller-successfully_deleted'));
     }
     

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @if(Auth::guest())
-                <h1>PRINQUIRY</h1>
+                <h1>Auto Parts Inquiry</h1>
                 <p><i>Send, Receive &amp; Compare <strong>Auto Parts Inquiry</strong></i>
                         It's Fast, Easy &amp; Economical
                 </p>

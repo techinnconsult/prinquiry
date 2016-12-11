@@ -15,7 +15,7 @@
         <script src="{{ url('prinquiry/assets/js') }}/jquery.scrolly.min.js"></script>
         <script src="{{ url('prinquiry/assets/js') }}/skel.min.js"></script>
         <script src="{{ url('prinquiry/assets/js') }}/util.js"></script>
-<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
         <!--[if lte IE 8]><script src="{{ url('prinquiry/assets/js') }}/ie/respond.min.js"></script><![endif]-->
         <script src="{{ url('prinquiry/assets/js') }}/main.js"></script>
         <script src="{{ url('prinquiry/bootstrap/js') }}/bootstrap.js"></script>
@@ -133,10 +133,42 @@
                 $('#remaining_users').fadeToggle();
             })
              $('#inquiry-table').dataTable( {
-            "columnDefs": [
-                { "type": "numeric-comma", targets: 3 }
-            ]
-        } );
+                "columnDefs": [
+                    { "type": "numeric-comma", targets: 3 }
+                ]
+            });
+            $("#search").on("keyup", function() {
+                var value = $(this).val();
+
+                $("table#supplier-list tr").each(function(index) {
+                    if (index !== 0) {
+
+                        $row = $(this);
+
+                        var id = $row.find("td:first label span").text().toLowerCase();
+                        if (id.indexOf(value.toLowerCase()) !== 0) {
+                            $row.hide();
+                        }
+                        else {
+                            $row.show();
+                        }
+                    }
+                });
+                $("table#supplier-list-more tr").each(function(index) {
+                    if (index !== 0) {
+
+                        $row = $(this);
+
+                        var id = $row.find("td:first label span").text().toLowerCase();
+                        if (id.indexOf(value.toLowerCase()) !== 0) {
+                            $row.hide();
+                        }
+                        else {
+                            $row.show();
+                        }
+                    }
+                });
+            });
         </script>
 </body>
 </html>

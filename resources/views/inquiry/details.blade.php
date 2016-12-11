@@ -87,7 +87,7 @@
                                 $style = '';
                                 if(isset($seller_inquiry_details[$i])){
                                     $price = $seller_inquiry_details[$i]['price'];
-                                    if($min_price == $price){
+                                    if($min_price == $price && $min_price > 0){
                                         $style =  'background: #493382 none repeat scroll 0 0;color: #fff;';
                                     }else{
                                         $style = '';
@@ -96,10 +96,20 @@
                                     $price = '';
                                     $style = '';
                                 }
+                                if($price > 0){
+                                    $price = number_format($price, 2, '.', '');
+                                }else{
+                                    $price = 0;
+                                }
+                                if($seller_inquiry_details[$i]['stock']){
+                                    $stock = $seller_inquiry_details[$i]['stock'];
+                                }else{
+                                    $stock = 0;
+                                }
                                 ?>
                             <td style="{{ $style }}">
                                 <ul style="list-style:none;margin:0px;text-align:center;">
-                                    <li>{{ $seller_inquiry_details[$i]['stock']."/".$price."(AED)" }}</li>
+                                    <li>{{ $stock."/".$price }}</li>
                                     <li>{{ $seller_inquiry_details[$i]['brand'] }}</li>
                                 </ul>
                             </td>

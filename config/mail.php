@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => 'muzammil.qureshi@gmail.com',
-        'name' => 'PRinquiry',
+        'name' => 'Auto Parts Inquiry',
     ],
 
     /*

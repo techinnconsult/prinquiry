@@ -36,12 +36,12 @@
                     <?php
                     $inquiry_detail = $inquiry_details[$i];
                     ?>
-                    <td><?php $inquiry_detail[0]['partnum']; ?></td>
-                    <td><?php $inquiry_detail[1]['qty']; ?></td>
-                    <td><?php $inquiry_detail[2]['unit']; ?></td>
-                    <td><?php  $inquiry_detail[3]['type']; ?></td>
-                    <td><?php  $inquiry_detail[4]['category']; ?></td>
-                    <td><?php  $inquiry_detail[5]['detail']; ?></td>
+                    <td><?php echo $inquiry_detail[0]['partnum']; ?></td>
+                    <td><?php echo $inquiry_detail[1]['qty']; ?></td>
+                    <td><?php echo $inquiry_detail[2]['unit']; ?></td>
+                    <td><?php echo $inquiry_detail[3]['type']; ?></td>
+                    <td><?php echo $inquiry_detail[4]['category']; ?></td>
+                    <td><?php echo $inquiry_detail[5]['detail']; ?></td>
                 </tr>
                 <?php
                 }

@@ -90,6 +90,9 @@ class InquiryController extends Controller
         $inquiry_details = array();
         $inquiry_details_post = $request->inqpost;
         $index = 0;
+        /*
+         * Create Inquiry Details Json
+         */
         for($i = 0;$i < count($inquiry_details_post)-2;){
             if($inquiry_details_post[$i]['partnum'] != ''){           
                 for($j = 0; $j < 6; $j++){
@@ -118,19 +121,52 @@ class InquiryController extends Controller
                 $i = $i+6;
             }
         }
+        
+        /*
+         * Deduct Customer Blanace of creating Inquiry
+         */
         $balance = $user->balance;
         DB::table('users')
                 ->where('id',$user->id)
                 ->update(['balance' => $balance-1]);
         
+        /*
+         * Create Inquiry
+         */
         $inquiry_id = DB::table('inquiry')->insertGetId(['inquir_details' => json_encode($inquiry_details),
             'customer_id' => $user->id, 'priority' => $request->priority,
             'delivery_required' => $request->delivery_required, 'location' => $request->location, 'created_at' => date('Y-m-d H:i:s')]);
         
+        /*
+         * Add Sellers to that particular Inquiry and send them email with inquiry overview. 
+         */
+        
         $seller_ids = $_POST['inquiry-supplier'];
         foreach($seller_ids as $seller_id){
             $seller = User::where('id',$seller_id) -> first();
+            /*
+             * Add suppliers in preffered list. 
+             * If they invite them previously by same customer then they will be added in preferred supplier list 
+             */
+            $seller_count = DB::table('inquiry as i')
+                ->leftJoin('seller_inquiry as si', 'i.id', '=', 'si.inquiry_id')
+                ->where('i.customer_id', $user->id)
+                ->where('si.seller_id', $seller_id)
+                ->where('i.closed', '0')
+                ->count();
+            if($seller_count > 2){
+                $preffered_user_count = DB::table('customer_seller')
+                ->where('customer_id', $user->id)
+                ->where('seller_id', $seller_id)
+                ->count();
+                if($preffered_user_count == 0){
+                    DB::table('customer_seller')->insert(['seller_id' => $seller_id,'customer_id' => $user->id,'created_at' => date('Y-m-d H:i:s'),'updated_at' => date('Y-m-d H:i:s')]);
+                }
+            }
             $seller_inquiry = array();
+            /*
+             * Add suppliers to that particular inquiry
+             */
             DB::table('seller_inquiry')->insert(['seller_id' => $seller_id,'inquiry_id' => $inquiry_id,'status' => 'New','created_at' => date('Y-m-d H:i:s')]);
             $code['seller_name'] = $seller->name;
             $code['user_name'] = $user->name;

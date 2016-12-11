@@ -19,6 +19,7 @@ Route::get('/', "HomeController@index");
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::post('/home/contactus', 'HomeController@contactus');
 
 Route::get('/inquiry/received', 'InquiryController@received');
 Route::get('/inquiry/supplier/{inquiry_id}', 'InquiryController@supplier');

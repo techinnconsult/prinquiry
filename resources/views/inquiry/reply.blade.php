@@ -75,13 +75,13 @@
                                 @endif
                             @endforeach
                             <?php if(isset($seller_inquiry_details[$i])){ ?>
-                            <td> <input required type="text" name="inqpost[{{ $i }}][stock]" value="{{ $seller_inquiry_detail['stock']}}" /> </td>
-                            <td> <input required type="text" name="inqpost[{{ $i }}][price]" value="{{ $seller_inquiry_detail['price']}}" /> </td>
+                            <td> <input type="text" name="inqpost[{{ $i }}][stock]" value="{{ $seller_inquiry_detail['stock']}}" /> </td>
+                            <td> <input type="text" name="inqpost[{{ $i }}][price]" value="{{ $seller_inquiry_detail['price']}}" /> </td>
                             <td> <input type="text" name="inqpost[{{ $i }}][brand]" value="{{ $seller_inquiry_detail['brand']}}" /> </td>
                             <?php }else{
                                 ?>
-                            <td> <input required type="text" name="inqpost[{{ $i }}][stock]" value="" /> </td>
-                            <td> <input required type="text" name="inqpost[{{ $i }}][price]" value="" /> </td>
+                            <td> <input type="text" name="inqpost[{{ $i }}][stock]" value="" /> </td>
+                            <td> <input type="text" name="inqpost[{{ $i }}][price]" value="" /> </td>
                             <td> <input type="text" name="inqpost[{{ $i }}][brand]" value="" /> </td>
                             <?php 
                             }

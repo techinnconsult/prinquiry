@@ -111,6 +111,6 @@
                 </nav>
                <div style="clear:both"></div>
            </div>
-            <div style="clear:both;height:5px;"></div>
+            <div style="clear:both;height:5px;margin-top: -30px;"></div>
         </div>
 </section>

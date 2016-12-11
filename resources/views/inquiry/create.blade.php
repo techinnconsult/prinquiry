@@ -47,8 +47,8 @@
                         <div class="2u 12u$(xsmall)">
                             <div class="select-wrapper">
                                 <select name="inqpost[][type]" id="inqpost[][type]">
-                                    <option value="New">New</option>
-                                    <option value="Used">Used</option>
+                                    <option value="Genuine">Genuine</option>
+                                    <option value="Aftermarket">Aftermarket</option>
                                     <option value="Any">Any</option>
 
                                 </select>
@@ -84,36 +84,43 @@
                 @if($selected_customers->count() > 0)
                     <div class="6u 12u$(xsmall)">
                         <h4>Frequent Supplier</h4>
-                                <table class="table table-striped table-hover table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <label><input type="checkbox" id="checkbox_preffered_supplier"/> <b>Check all</b> </label>
-                                            </th>
-                                            <th>Company Name</th>
-                                            <th>Deals In</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($selected_customers as $selected_customer)
-                                            <tr>
-                                                <td>
-                                                    <label>
-                                                        <input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">
-                                                        {{ $selected_customer->name }}
-                                                    </label>
-                                                </td>
-                                                <td>{{ $selected_customer->company_name }}</td>
-                                                <td>{{ $selected_customer->mobile_phone }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                        <table class="table table-striped table-hover table-responsive" style="margin-top: 25px;">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label><input type="checkbox" id="checkbox_preffered_supplier"/> <b>Check all</b> </label>
+                                    </th>
+                                    <th>Company Name</th>
+                                    <th>Deals In</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($selected_customers as $selected_customer)
+                                    <tr>
+                                        <td>
+                                            <label>
+                                                <input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">
+                                                <span>{{ $selected_customer->name }}</span>
+                                            </label>
+                                        </td>
+                                        <td>{{ $selected_customer->company_name }}</td>
+                                        <td>{{ $selected_customer->mobile_phone }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <div class="6u 12u$(xsmall)">
-                        <h4>Other/ ALL  Supplier</h4>
+                        <div class="split style2">
+                            <section style="border: none;padding:0;">
+                                <h4>Other/ ALL  Supplier</h4>
+                            </section>
+                            <section style="border: none;padding:0;margin-top: -10px;margin-bottom: 15px;">
+                                <input type="text" id="search" placeholder="Search Supplier" />
+                            </section>
+                        </div>
                         
-                    <table class="table table-striped table-hover table-responsive">
+                    <table id="supplier-list" class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th>
@@ -125,9 +132,16 @@
                         </thead>
                 @else 
                    <div class="12u$ 12u$(xsmall)"> 
-                        <h4>Other/ ALL  Supplier</h4>
+                        <div class="split style2">
+                            <section style="border: none;padding:0;">
+                                <h4>Other/ ALL  Supplier</h4>
+                            </section>
+                            <section style="border: none;padding:0;margin-top: -10px;margin-bottom: 15px;">
+                                <input type="text" id="search" placeholder="Search Supplier" />
+                            </section>
+                        </div>
                         
-                    <table class="table table-striped table-hover table-responsive">
+                    <table id="supplier-list" class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th>
@@ -142,9 +156,9 @@
                                 <tr>
                                     <td>
                                         <label>
-                                            <input value="{{ $user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">{{ $user->name }}
+                                            <input value="{{ $user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
+                                            <span>{{ $user->name }}</span>
                                         </label>
-                                        <!--<input value="{{ $selected_customer->id }}" class="checkbox" id="preffered_supplier" name="inquiry-supplier[]" type="checkbox">-->
                                     </td>
                                     <td>{{ $user->company_name }}</td>
                                     <td>{{ $user->mobile_phone }}</td>
@@ -154,12 +168,13 @@
                         </table>
                         @if($remaining_users->count() > 0)
                             <div id="remaining_users" style="display:none;">
-                                <table class="table table-striped table-hover table-responsive">
+                                <table id="supplier-list-more" class="table table-striped table-hover table-responsive">
                                     @foreach($remaining_users as $remaining_user)
                                         <tr>
                                             <td>
                                                 <label>
-                                                    <input value="{{ $remaining_user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">{{ $remaining_user->name }}
+                                                    <input value="{{ $remaining_user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
+                                                    <span>{{ $remaining_user->name }}</span>
                                                 </label>
                                             </td>
                                             <td>
@@ -225,5 +240,4 @@
     {!! Form::close() !!}
 
 @endsection
-
 

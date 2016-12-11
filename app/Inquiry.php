@@ -21,6 +21,7 @@ class Inquiry extends Model {
                 ->leftJoin('users', 'seller_inquiry.seller_id', '=', 'users.id')
                 ->select('inquiry.*', 'seller_inquiry.status', 'seller_inquiry.delievery_date')
                 ->orderByRaw("FIELD(seller_inquiry.status , 'New','Pending','Reply') ASC")
+                ->orderBy('inquiry.id','desc')
                 ->where('seller_inquiry.seller_id', $id)
                 ->where('seller_inquiry.closed', '0')
                 ->get();
@@ -71,6 +72,7 @@ class Inquiry extends Model {
                 ->where('seller_inquiry.seller_id', $id)
                 ->where('inquiry.closed', '0')
                 ->orderByRaw("FIELD(seller_inquiry.status , 'New','Pending','Reply') ASC")
+                ->orderBy('inquiry.id','desc')
                 ->limit(5)
                 ->get();
         return $Inquiries;
