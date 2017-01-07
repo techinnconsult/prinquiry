@@ -12,12 +12,13 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use App\Role;
 use Laraveldaily\Quickadmin\Observers\UserActionsObserver;
 use Laraveldaily\Quickadmin\Traits\AdminPermissionsTrait;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Model implements AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, AdminPermissionsTrait;
+    use Authenticatable, Authorizable, CanResetPassword, AdminPermissionsTrait,Notifiable;
 
     /**
      * The database table used by the model.

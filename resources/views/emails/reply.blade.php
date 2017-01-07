@@ -15,7 +15,7 @@
         </div><br/>
         <div>
             Regards,<br/>
-            Prinquiry Team
+            AutoPartsInquiry.com
         </div>
     </body>
 </html>

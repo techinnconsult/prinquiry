@@ -73,4 +73,8 @@ class HomeController extends Controller
             ->get();
         return view('home',['selected_customers'=>$selected_customers,'sentInquiry' => $inq->getRecentCreatedInquiries($user->id),'inquiries' => $inq->getRecentInquiriesBySupplierId($user->id),'customers' => $customer]);
     }
+    
+    public function faq(){
+        return view('faq');
+    }
 }

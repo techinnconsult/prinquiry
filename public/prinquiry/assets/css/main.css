@@ -3511,13 +3511,13 @@
 	}
 
 		table tbody tr {
-			border: solid 1px rgba(255, 255, 255, 0.15);
+			border: solid 1px rgba(255, 255, 255, 0.15) !important;
 			border-left: 0;
 			border-right: 0;
 		}
 
 			table tbody tr:nth-child(2n + 1) {
-				background-color: rgba(255, 255, 255, 0.05);
+				background-color: rgba(255, 255, 255, 0.05) !important;
 			}
 
 		table td {

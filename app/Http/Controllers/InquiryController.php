@@ -78,7 +78,7 @@ class InquiryController extends Controller
                 ->get();
         return view('inquiry.create', ['remaining_users' => $remaining_users,'categories' => $categories,'users' => $users,'selected_customers' => $selected_customers]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -275,6 +275,29 @@ class InquiryController extends Controller
         return json_encode($inq->getSellersDetailsByInquiryId($inquiry_id));
     }
     
+    public function suppliers(){
+         $user = auth()->user();
+        
+        $selected_customers = DB::table('users')
+            ->leftJoin('customer_seller', 'customer_seller.seller_id', '=', 'users.id')
+            ->select('users.*','customer_seller.seller_id')
+            ->whereRaw('customer_seller.customer_id = '.$user->id)
+            ->orderBy('users.name', 'asc')
+            ->get();
+        $not_in_array = array();
+        foreach($selected_customers as $selected_customer){
+            $not_in_array[] = $selected_customer->seller_id;
+        }
+        $not_in_array[] = $user->id;
+        
+        $users_count = DB::table('users')
+                ->whereNotIn('id', $not_in_array)->count();
+        $users = DB::table('users')
+                ->whereNotIn('id', $not_in_array)
+                ->orderBy('users.name', 'asc')
+                ->get();
+        return response($users);
+    }
     public function shortView($inquiry_id){
         $inq = new Inquiry();
         $inquiry = $inq->getInquiryById($inquiry_id);

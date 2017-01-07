@@ -20,9 +20,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::post('/home/contactus', 'HomeController@contactus');
+Route::get('/home/faq', 'HomeController@faq');
 
 Route::get('/inquiry/received', 'InquiryController@received');
 Route::get('/inquiry/supplier/{inquiry_id}', 'InquiryController@supplier');
+Route::get('/inquiry/suppliers', 'InquiryController@suppliers');
 Route::get('/inquiry/shortView/{inquiry_id}', 'InquiryController@shortView');
 Route::get('/inquiry/reply/{inquiry_id}', 'InquiryController@reply');
 Route::get('/inquiry/closeSellerInquiry/{inquiry_id}', 'InquiryController@closeSellerInquiry');
@@ -38,5 +40,7 @@ Route::get('/users/verify/{confirmation_code}', 'UsersController@confirm');
 Route::resource('profile', 'ProfileController');
 
 Route::resource('inquiry', 'InquiryController');
+
+
 
 //Route::post('/profile/{$id}/update', 'ProfileController@update');

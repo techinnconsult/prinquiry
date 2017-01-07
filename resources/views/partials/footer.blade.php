@@ -22,12 +22,16 @@
         <script src="{{ url('prinquiry/assets/js/') }}/jquery.steps.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        
         <script>
+        
             $('.datepicker').datepicker({
                 autoclose: true,
                 dateFormat: "yy-m-d"
             });
-           
+            $(document).ready(function() {
+                
+            });
            $('#reset-inquiry-details').click(function(){
               $('#supplier_id input[type="text"]').val('');
            });
@@ -52,6 +56,8 @@
                 autoFocus: true,
                 onStepChanging: function (event, currentIndex, newIndex)
                 {
+                    if(currentIndex == 1){
+                    }
                     // Used to skip the "Warning" step if the user is old enough.
                     var fields = $( "#rows1  :input" ).serializeArray();
                     if (fields[0].value != '')

@@ -1,54 +1,8 @@
-<div class="inner">
-    
-    <h2>Contact Us</h2>
-    <div class="split style1">
-        <section>
-
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/contactus/') }}">
-                {{ csrf_field() }}
-                <div class="field half first">
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" />
-                </div>
-                <div class="field half">
-                    <label for="email">Email</label>
-                    <input type="text" name="email" id="email" />
-                </div>
-                <div class="field">
-                    <label for="message">Message</label>
-                    <textarea name="message" id="message" rows="5"></textarea>
-                </div>
-                <ul class="actions">
-                    <li><a href="" class="button submit">Send Message</a></li>
-                </ul>
-            </form>
-        </section>
-        <section>
-            <ul class="contact">
-
-                <li>
-                    <h3>Email</h3>
-                    <a href="#">info@autopartsinquiry.com</a>
-                </li>
-                <li>
-                    <h3>Phone</h3>
-                    <span>(+971) 50-8511760</span>
-                </li>
-                <li>
-                    <h3>Social</h3>
-                    <ul class="icons">
-                        <li><a href="javascript:void()" class="fa-twitter"><span class="label">Twitter</span></a></li>
-                        <li><a href="javascript:void()" class="fa-facebook"><span class="label">Facebook</span></a></li>
-                        <li><a href="javascript:void()" class="fa-github"><span class="label">GitHub</span></a></li>
-                        <li><a href="javascript:void()" class="fa-instagram"><span class="label">Instagram</span></a></li>
-                        <li><a href="javascript:void()" class="fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-    </div>
+@extends('layouts.app')
+@section('content')
     <h2>Help/Support</h2>
-    									<p>
+    <section>
+									<p>
 <b>Q: What are the benefits of Autopartsinquiry.com</b><br/>
 A: It is an online inquiry management service to send, receive and compare auto parts inquiry with ease. You can send single inquiry to multiple suppliers and compare the rates after replied being received. Supplier will be able to get frequent inquiries will which increase more chances of getting business<br/><br/>
 <b>Q: How I will be charged?</b><br/>
@@ -90,5 +44,8 @@ A: Autopartsinquiry.com  believe in trust/support, our main aim is to support Au
 
 										
 									</p>
-    
-</div>
+									
+									
+								</section>
+@endsection
+                

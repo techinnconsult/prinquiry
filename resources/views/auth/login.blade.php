@@ -46,6 +46,27 @@
                         </div>
                     </div>
                 </form>
+                <h2>Our Valued Partners</h2>
+                <ul style="list-style:none;">
+                    <li style="float:left;margin-right:3%;">
+                        <img src="{{ url('prinquiry/images/') }}/jamaliautoparts.jpg" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                    <li style="float:left;margin-right:3%;">
+                        <img src="{{ url('prinquiry/images/') }}/tiba.png" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                    <li style="float:left;margin-right:3%;">
+                        <img src="{{ url('prinquiry/images/') }}/almarooftrading.png" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                    <li style="float:left;margin-right:3%;">
+                        <img src="{{ url('prinquiry/images/') }}/almaroof.png" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                    <li style="float:left;margin-right:3%;">
+                        <img src="{{ url('prinquiry/images/') }}/kuwait.png" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                    <li style="float:left;">
+                        <img src="{{ url('prinquiry/images/') }}/amp.png" style="width: 130px;border-radius: 5px;" />
+                    </li>
+                </ul>
     @endif
 @endsection
                 

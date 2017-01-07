@@ -23,8 +23,11 @@
         <div id="inquiry-wizard">
             <h3>Step 1 - Inquiry</h3>
             <section>
-                <div id="inquiry_details">
-                    <?php for($i=1; $i<6;$i++){ ?>
+                <div ng-controller="appCtrl">
+                    <p><% test.text %>, world </p>
+                </div>
+                
+                <div id="inquiry_details">                <?php for($i=1; $i<6;$i++){ ?>
                     <div class="row uniform inquiry-fields" id="rows{{ $i }}">
                         <div class="2u 12u$(xsmall)">
                             <input type="text" name="inqpost[][partnum]" id="inqpost[][partnum]" value="" placeholder="Part Number" />
@@ -110,85 +113,78 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="6u 12u$(xsmall)">
+                    <div ng-controller="InquiryController" class="6u 12u$(xsmall)">
                         <div class="split style2">
                             <section style="border: none;padding:0;">
                                 <h4>Other/ ALL  Supplier</h4>
                             </section>
                             <section style="border: none;padding:0;margin-top: -10px;margin-bottom: 15px;">
-                                <input type="text" id="search" placeholder="Search Supplier" />
+                                <form class="form-inline">
+                                   <input ng-model="query" type="text"
+                                     placeholder="Search Supplier" autofocus>
+                                 </form>
                             </section>
-                        </div>
-                        
+                        </div>  
                     <table id="supplier-list" class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th>
-                                    <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                                    <input type="checkbox" id="checkbox_supplier"/> 
+                                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                                        Name
+                                    </a>
                                 </th>
-                                <th>Company Name</th>
-                                <th>Deals In</th>
+                                <th><a href="#" ng-click="sortType = 'company_name'; sortReverse = !sortReverse">Company Name</a></th>
+                                <th><a href="#" ng-click="sortType = 'mobile_phone'; sortReverse = !sortReverse">Deals In</a></th>
                             </tr>
                         </thead>
                 @else 
-                   <div class="12u$ 12u$(xsmall)"> 
+                   <div ng-controller="InquiryController" class="12u$ 12u$(xsmall)"> 
                         <div class="split style2">
                             <section style="border: none;padding:0;">
                                 <h4>Other/ ALL  Supplier</h4>
                             </section>
                             <section style="border: none;padding:0;margin-top: -10px;margin-bottom: 15px;">
-                                <input type="text" id="search" placeholder="Search Supplier" />
+                                <form class="form-inline">
+                                   <input ng-model="query" type="text"
+                                     placeholder="Search Supplier" autofocus>
+                                 </form>
                             </section>
                         </div>
-                        
-                    <table id="supplier-list" class="table table-striped table-hover table-responsive">
+                    <table id="supplier-list" id="supplier-list" class="table table-striped table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th>
-                                    <label><input type="checkbox" id="checkbox_supplier"/> <b>Check all</b> </label>
+                                    <input type="checkbox" id="checkbox_supplier"/> 
+                                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                                        Name
+                                    </a>
                                 </th>
-                                <th>Company Name</th>
+                                <th><a href="#" ng-click="sortType = 'company_name'; sortReverse = !sortReverse">Company Name</a></th>
+                                <th><a href="#" ng-click="sortType = 'mobile_phone'; sortReverse = !sortReverse">Deals In</a></th>
                             </tr>
                         </thead>
                 @endif
                         <tbody>
-                            @foreach($users as $user)
-                                <tr>
-                                    <td>
-                                        <label>
-                                            <input value="{{ $user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
-                                            <span>{{ $user->name }}</span>
-                                        </label>
-                                    </td>
-                                    <td>{{ $user->company_name }}</td>
-                                    <td>{{ $user->mobile_phone }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
+                            <tr ng-repeat="supplier in suppliers | orderBy:sortType:sortReverse | limitTo: paginationLimit() | filter:query">
+                              <td> 
+                                  <label>
+                                    <input value="<% supplier.id %>" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
+                                    <span><% supplier.name %></span>
+                                    </label>
+                              </td>
+                              <td><% supplier.company_name %></td>
+                              <td><% supplier.mobile_phone %></td>
+                            </tr>
+                          </tbody>
+                            <tfoot>
+                                <td colspan="3">
+                                    <button type="button" ng-show="hasMoreItemsToShow()" ng-click="showMoreItems()">
+                                        Load more
+                                   </button>
+                                </td>
+                            </tfoot>
                         </table>
-                        @if($remaining_users->count() > 0)
-                            <div id="remaining_users" style="display:none;">
-                                <table id="supplier-list-more" class="table table-striped table-hover table-responsive">
-                                    @foreach($remaining_users as $remaining_user)
-                                        <tr>
-                                            <td>
-                                                <label>
-                                                    <input value="{{ $remaining_user->id }}" class="checkbox" id="supplier" name="inquiry-supplier[]" type="checkbox">
-                                                    <span>{{ $remaining_user->name }}</span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label>
-                                                    {{ $remaining_user->company_name }}
-                                                </label>
-                                            </td>
-                                            <td>{{ $remaining_user->mobile_phone }}</td>
-                                        </tr>
-                                    @endforeach
-                                </table>
-                            </div>
-                            <a class="button scrolly" id="moreSupplier">More Supplier..</a>
-                        @endif
                     </div>
                 </div>
             </section>
